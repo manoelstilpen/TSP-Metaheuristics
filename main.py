@@ -4,11 +4,12 @@
 from Problem import *
 from Menu import *
 
+
 def main():
     info_path='./inputs/C50INFO.TXT'
     cities_path='./inputs/C50.TXT'
-    P=Problem('TSP', info_path, cities_path)
-    menu=Menu(P)
+    P = Problem('TSP', info_path, cities_path)
+    menu = Menu(P)
     menu.run()
 
 

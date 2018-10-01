@@ -1,36 +1,38 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from os import *
 import time
+
 
 class Menu(object):
     def __init__(self, problem):
-        self.exec_flag=True
-        self.problem=problem
+        self.exec_flag = True
+        self.problem = problem
 
     def run(self):
         while self.exec_flag:
-            opt=self.screen_main()
+            opt = self.screen_main()
             self.exec_operation(opt)
 
     def input_data(self):
+        opt = -1
+
         try:
-            opt=int(raw_input('Choice: '))
+            opt = int(input('Choice: '))
         except Exception as e:
             print('> ERROR: invalid input character!')
             time.sleep(1)
-            opt=-1
+            opt = -1
         finally:
             return opt
 
     def screen_main(self):
-        opt=-1
-        while opt<0 or opt>14:
+        opt = -1
+        while opt < 0 or opt > 14:
             # os.system('cls' if os.name == 'nt' else 'clear')
             print(' {} '.format(self.problem.name).center(50, '='))
-            print(' Main Menu '.center(50,'*'))
-            if self.problem.solution==None:
+            print(' Main Menu '.center(50, '*'))
+            if self.problem.solution is None:
                 print('\t*** Need to create initial solution!')
             print('\t1. Initial Solution')
             print('\t2. Best Improvement Descent')
@@ -42,24 +44,26 @@ class Menu(object):
             print('\t8. Tabu Search')
             print('\t0. Quit')
             print('*'*50)
-            if self.problem.solution!=None:
+
+            if self.problem.solution is not None:
                 print('\t* FO of current solution: {}'.format(self.problem.solution.fo))
-            opt=self.input_data()
+
+            opt = self.input_data()
         return opt
 
     def screen_construction(self):
-        opt=-1
-        while opt<1 or opt>5:
+        opt = -1
+        while opt < 1 or opt > 5:
             # os.system('cls' if os.name == 'nt' else 'clear')
             print(' {} '.format(self.problem.name).center(50, '='))
             print(' Initial Solution '.center(50,'*'))
-            print('\t1. Random Solution')
-            print('\t2. Greed Solution (nearest neighbor)')
-            print('\t3. Partially Greed Solution (nearest neighbor)')
-            print('\t4. Greed Solution (cheapest insertion)')
-            print('\t5. Partially Greed Solution (cheapest insertion)')
+            print('\t1. Greed Solution (nearest neighbor)')
+            print('\t2. Partially Greed Solution (nearest neighbor)')
+            print('\t3. Greed Solution (cheapest insertion)')
+            print('\t4. Partially Greed Solution (cheapest insertion)')
+            print('\t5. Random Solution')
             print('*'*50)
-            opt=self.input_data()
+            opt = self.input_data()
             self.problem.create_solution(opt)
         return opt
 
@@ -72,36 +76,39 @@ class Menu(object):
         import time
         method = None
         ini_time = time.clock()
-        if opt==0:
+
+        if opt == 0:
             self.quit()
-        elif opt==1:
+        elif opt == 1:
             self.screen_construction()
-        elif opt==2:
+        elif opt == 2:
             print('\t* Best Improvement Descent')
             method, _ = self.problem.apply_method('BestImproventDescent')
-        elif opt==3:
+        elif opt == 3:
             print('\t* First Improvement Descent')
             method, _ = self.problem.apply_method('FirstImproventDescent')
-        elif opt==4:
+        elif opt == 4:
             print('\t* Random Descent')
             method, _ = self.problem.apply_method('RandomDescent')
-        elif opt==5:
+        elif opt == 5:
             print('\t* Simulated Annealing')
             method, _ = self.problem.apply_method('SimulatedAnnealing')
-        elif opt==6:
+        elif opt == 6:
             print('\t* Multi Start')
             method, _ = self.problem.apply_method('MultiStart')
-        elif opt==7:
+        elif opt == 7:
             print('\t* Iterated Local Search')
             method, _ = self.problem.apply_method('IteratedLocalSearch')
-        elif opt==8:
+        elif opt == 8:
             print('\t* Tabu Search')
             method, _ = self.problem.apply_method('TabuSearch')
         else:
             print('ERROR: invalid option ({})'.format(opt))
+
         print(self.problem.solution)
         print('Time {}'.format(time.clock()-ini_time))
+
         if method and method.metrics:
             method.plot_metrics()
-        raw_input('\nPress ENTER to continue...')
+        input('\nPress ENTER to continue...')
 
